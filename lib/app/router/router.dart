@@ -1,6 +1,9 @@
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
-import 'package:image_search/app/screen/Root/components/Tab/tab_shell.dart';
+import 'package:image_search/app/screen/Tab/pages/Favorite/favorite_page.dart';
+import 'package:image_search/app/screen/Tab/pages/ImageSearch/image_search_page.dart';
+import 'package:image_search/app/screen/Tab/pages/TextSearch/text_search_page.dart';
+import 'package:image_search/app/screen/Tab/tab_shell.dart';
 import 'package:image_search/app/screen/Root/root_page.dart';
 
 abstract class RouterOutlet {
@@ -13,23 +16,35 @@ abstract class RouterOutlet {
   // RouterOutlet._internal();
 
   static final _rootNavigatorKey = GlobalKey<NavigatorState>();
-  static final _shellNavigatorKey = GlobalKey<NavigatorState>();
+  // static final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
   static final router = GoRouter(
-    initialLocation: Route.root,
+    initialLocation: RouterPath.favorite,
     navigatorKey: _rootNavigatorKey,
     routes: [
-      GoRoute(path: Route.root, builder: (context, state) => RootPage()),
-      StatefulShellRoute.indexedStack(builder: (context, state, child) => TabShell(navigationShell: child,),
-      branches: []),
+      StatefulShellRoute.indexedStack(
+        parentNavigatorKey: _rootNavigatorKey,
+        builder: (context, state, child) => TabShell(navigationShell: child),
+        branches: [
+          StatefulShellBranch(routes: [GoRoute(path: _Path.image, builder: (context, state) => ImageSearchPage())]),
+          StatefulShellBranch(routes: [GoRoute(path: _Path.text, builder: (context, state) => TextSearchPage())]),
+          StatefulShellBranch(routes: [GoRoute(path: _Path.favorite, builder: (context, state) => FavoritePage())]),
+        ],
+      ),
     ],
   );
 }
 
-abstract class Route {
+abstract class RouterPath {
   static const root = _Path.root;
+  static const favorite = _Path.favorite;
+  static const image = _Path.image;
+  static const text = _Path.text;
 }
 
 abstract class _Path {
   static const root = '/';
+  static const favorite = '/favorite';
+  static const image = '/image';
+  static const text = '/text';
 }
