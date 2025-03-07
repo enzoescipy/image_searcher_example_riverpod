@@ -14,7 +14,7 @@ class TabNotifier extends Notifier<TabControllerVO> {
   }
 
   @override
-  build() {
+  TabControllerVO build() {
     return TabControllerVO();
   }
 }

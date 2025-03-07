@@ -4,7 +4,6 @@ import 'package:image_search/app/screen/Tab/pages/Favorite/favorite_page.dart';
 import 'package:image_search/app/screen/Tab/pages/ImageSearch/image_search_page.dart';
 import 'package:image_search/app/screen/Tab/pages/TextSearch/text_search_page.dart';
 import 'package:image_search/app/screen/Tab/tab_shell.dart';
-import 'package:image_search/app/screen/Root/root_page.dart';
 
 abstract class RouterOutlet {
   // static final RouterOutlet _instance = RouterOutlet._internal();
@@ -19,7 +18,7 @@ abstract class RouterOutlet {
   // static final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
   static final router = GoRouter(
-    initialLocation: RouterPath.favorite,
+    initialLocation: RouterPath.image,
     navigatorKey: _rootNavigatorKey,
     routes: [
       StatefulShellRoute.indexedStack(
