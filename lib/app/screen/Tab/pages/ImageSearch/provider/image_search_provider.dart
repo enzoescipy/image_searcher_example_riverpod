@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ImageSearchControllerVO {
+  /// search keyward user typed in
   String searchKeyword = "";
+
+  Future? loadingState;
 }
 
 class ImageSearchNotifier extends Notifier<ImageSearchControllerVO> {
@@ -16,19 +19,11 @@ class ImageSearchNotifier extends Notifier<ImageSearchControllerVO> {
     state = newState;
   }
 
-  final _mockurlMonalisa = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0s5B5TIgNtd8NBG31BBu2v1cCxIZi3AEE2g&s";
-  final _mockurlHarry = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeZwooMkgerem4IAE2Po97COhiF3MgMT_Vpw&s";
+  /// image future loading state getter
+  Future? get loadingState => state.loadingState;
 
-  /// mock URL getter
-  List<String> get mockUrlList => [
-    _mockurlMonalisa,
-    _mockurlHarry,
-    _mockurlMonalisa,
-    _mockurlHarry,
-    _mockurlMonalisa,
-    _mockurlHarry,
-    _mockurlMonalisa,
-  ];
+  /// image future loading state setter
+  set loadingState(Future? value) => value;
 
   @override
   ImageSearchControllerVO build() {

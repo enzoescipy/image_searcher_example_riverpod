@@ -1,8 +1,12 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:image_search/app/router/router.dart';
+import 'package:image_search/interface/vo_provider_manager/vo_provider_manager.dart';
 
 class URLImageOrganizer extends ConsumerWidget {
-  final List<String> urlList;
+  final List<ImageItemVO> urlList;
   final int col;
   final double width;
   final double margin;
@@ -17,7 +21,7 @@ class URLImageOrganizer extends ConsumerWidget {
     final List<Widget> widgetList = [];
     int i = 0;
     while (true) {
-      final currentRow = _digestRow(i);
+      final currentRow = _digestRow(i, context);
       if (currentRow == null) {
         break;
       } else {
@@ -31,7 +35,7 @@ class URLImageOrganizer extends ConsumerWidget {
     return SizedBox(child: Column(children: widgetList), width: width);
   }
 
-  List<Widget>? _digestRow(int order) {
+  List<Widget>? _digestRow(int order, BuildContext context) {
     final fromRange = order * col;
     int toRange = (order + 1) * col;
     if (toRange > urlList.length) {
@@ -44,13 +48,18 @@ class URLImageOrganizer extends ConsumerWidget {
     final List<Widget> widgetList = [];
 
     for (int i = fromRange; i < toRange; i++) {
-      final targetURL = urlList[i];
-      final imageWidget = Image.network(targetURL, width: imageWidth, height: imageWidth, fit: BoxFit.fitWidth);
-      widgetList.add(imageWidget);
+      final imageItem = urlList[i];
+      final imageWidget = Image.network(imageItem.imageURL, width: imageWidth, height: imageWidth, fit: BoxFit.fitWidth);
+      final clickableWidget = GestureDetector(child: imageWidget, onTap: () => context.go(RouterPath.imageDetail(i)));
+      widgetList.add(clickableWidget);
       widgetList.add(SizedBox(width: margin));
     }
 
-    widgetList.removeLast();
-    return widgetList;
+    if (widgetList.isEmpty) {
+      return null;
+    } else {
+      widgetList.removeLast();
+      return widgetList;
+    }
   }
 }

@@ -7,6 +7,7 @@ abstract class Palette {
   static const elevatedPrimary = Color(0xff10403B);
 
   static const secondary = Color(0xff8AA6A3);
+  static final secondary50 = Color.lerp(white, secondary, 0.50);
   static final secondary25 = Color.lerp(white, secondary, 0.25);
 
   static const elevatedSecondary = Color(0xff4C5958);

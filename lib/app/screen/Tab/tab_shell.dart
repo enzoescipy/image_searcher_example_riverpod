@@ -15,7 +15,6 @@ class TabShell extends ConsumerWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(title: Text('고양이 만세', style: theme.textTheme.headlineMedium), backgroundColor: Palette.background),
       body: Center(child: navigationShell),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Palette.background,
