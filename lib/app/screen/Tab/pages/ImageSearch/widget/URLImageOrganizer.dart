@@ -30,7 +30,9 @@ class URLImageOrganizer extends ConsumerWidget {
       }
       i++;
     }
-    widgetList.removeLast();
+    if (widgetList.isNotEmpty) {
+      widgetList.removeLast();
+    }
 
     return SizedBox(child: Column(children: widgetList), width: width);
   }
