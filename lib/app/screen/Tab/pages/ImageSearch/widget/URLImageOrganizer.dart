@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_search/app/router/router.dart';
 import 'package:image_search/interface/vo_provider_manager/vo_provider_manager.dart';
+import 'package:image_search/static/static.dart';
 
 class URLImageOrganizer extends ConsumerWidget {
   final List<ImageItemVO> urlList;
@@ -32,9 +33,21 @@ class URLImageOrganizer extends ConsumerWidget {
     }
     if (widgetList.isNotEmpty) {
       widgetList.removeLast();
+      return SizedBox(child: Column(children: widgetList), width: width);
+    } else {
+      return SizedBox(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.help_outline_outlined, size: 70, color: Palette.secondary),
+            SizedBox(height: 20),
+            Text("검색 결과가 없습니다.", style: Theme.of(context).textTheme.headlineMedium?.apply(color: Palette.secondary)),
+          ],
+        ),
+        width: width,
+        height: MediaQuery.of(context).size.height / 2,
+      );
     }
-
-    return SizedBox(child: Column(children: widgetList), width: width);
   }
 
   List<Widget>? _digestRow(int order, BuildContext context) {
@@ -51,7 +64,15 @@ class URLImageOrganizer extends ConsumerWidget {
 
     for (int i = fromRange; i < toRange; i++) {
       final imageItem = urlList[i];
-      final imageWidget = Image.network(imageItem.imageURL, width: imageWidth, height: imageWidth, fit: BoxFit.fitWidth);
+      final imageWidget = Image.network(
+        imageItem.imageURL,
+        width: imageWidth,
+        height: imageWidth,
+        fit: BoxFit.fitWidth,
+        // errorBuilder: (context, error, stackTrace) {
+        //   // return Image.asset(name)
+        // },
+      );
       final clickableWidget = GestureDetector(child: imageWidget, onTap: () => context.go(RouterPath.imageDetail(i)));
       widgetList.add(clickableWidget);
       widgetList.add(SizedBox(width: margin));

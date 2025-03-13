@@ -54,7 +54,7 @@ class KakaoAPI {
         }
         return imageVOList;
       } else {
-        log("${res.body}");
+        log("${res.body}, ${res.headers}, ${res.statusCode}");
       }
     } catch (e) {
       throw Exception("$e");
@@ -86,7 +86,7 @@ class KakaoAPI {
         }
         return imageVOList;
       } else {
-        log("${res.body}");
+        log("${res.body}, ${res.headers}, ${res.statusCode}");
       }
     } catch (e) {
       throw Exception("$e");

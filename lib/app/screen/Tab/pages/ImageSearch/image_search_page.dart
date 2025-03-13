@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_search/app/screen/Tab/pages/ImageSearch/provider/image_search_provider.dart';
@@ -11,9 +13,8 @@ class ImageSearchPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final providerNotifier = ref.read(imageSearchProvider.notifier);
+    final providerVO = ref.watch(imageSearchProvider);
     final mediaQuery = MediaQuery.of(context);
-    final imageItemVOInterfaceNotifier = ref.read(VOProviderManager().imageItemVOInterfaceProvider.notifier);
-    // imageItemVOInterfaceNotifier.mockGet();
     final imageItemVOInterface = ref.watch(VOProviderManager().imageItemVOInterfaceProvider);
     final theme = Theme.of(context);
 
@@ -31,11 +32,7 @@ class ImageSearchPage extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SearchBar(
-                onSubmitted: (value) {
-                  providerNotifier.searchKeyword = value;
-                  final res = imageItemVOInterfaceNotifier.getNextImage(providerNotifier.searchKeyword);
-                  providerNotifier.loadingState = res;
-                },
+                onSubmitted: (value) => providerNotifier.onSubmitQuery(value),
                 elevation: WidgetStatePropertyAll(1.5),
                 backgroundColor: WidgetStatePropertyAll(Palette.secondary25),
                 leading: Padding(
@@ -53,11 +50,15 @@ class ImageSearchPage extends ConsumerWidget {
               const SizedBox(height: Dimention.pageVerticalPadding),
               Flexible(
                 child: SingleChildScrollView(
+                  controller: providerVO.controller,
                   // child: URLImageOrganizer(urlList: imageItemVOInterface.storage, col: 3, width: mediaQuery.size.width - 20),
                   child: FutureBuilder(
-                    future: providerNotifier.loadingState,
+                    future: providerVO.loadingState,
                     builder: (context, snapshot) {
                       if (snapshot.hasData == false) {
+                        if (providerVO.loadingState == null) {
+                          return URLImageOrganizer(urlList: [], col: 3, width: mediaQuery.size.width - 20);
+                        }
                         return Column(
                           children: [
                             URLImageOrganizer(urlList: imageItemVOInterface.storage, col: 3, width: mediaQuery.size.width - 20),
