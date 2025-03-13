@@ -55,14 +55,11 @@ class TextSearchPage extends ConsumerWidget {
                     future: providerVO.loadingState,
                     builder: (context, snapshot) {
                       if (snapshot.hasData == false) {
-                        if (providerVO.loadingState == null) {
+                        if (providerVO.loadingState == null || textItemVOInterface.storage.isEmpty) {
                           return URLTextOrganizer(textItemList: []);
                         }
                         return Column(
-                          children: [
-                            URLTextOrganizer(textItemList: textItemVOInterface.storage),
-                            CircularProgressIndicator(),
-                          ],
+                          children: [URLTextOrganizer(textItemList: textItemVOInterface.storage), CircularProgressIndicator()],
                         );
                       } else if (snapshot.hasError) {
                         return Text("Error : ${snapshot.error}");

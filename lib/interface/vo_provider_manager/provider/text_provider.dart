@@ -26,7 +26,12 @@ class TextItemVOInterface {
     currentPage = 0;
   }
 
-  Future<void> getNextText(String query) async {
+  Future<void>? getNextText(String query) async {
+    if (query.isEmpty) {
+      clear();
+      return;
+    }
+
     final Future<List<kakaoPageVO>?> res;
     if (query == queryHistory) {
       currentPage += 1;
@@ -34,6 +39,7 @@ class TextItemVOInterface {
     } else {
       queryHistory = query;
       currentPage = 0;
+      clear();
       res = KakaoAPI.getPage(query: query, pageNum: currentPage);
     }
 
@@ -50,7 +56,7 @@ class TextItemVOInterface {
 
 class TextItemNotifier extends Notifier<TextItemVOInterface> {
   void clear() => state.clear();
-  Future<void> getNextText(String query) => state.getNextText(query);
+  Future<void>? getNextText(String query) => state.getNextText(query);
   TextItemVO getSingleVO(int index) => state.getSingleVO(index);
 
   @override

@@ -60,7 +60,12 @@ class ImageItemVOInterface {
     currentPage = 0;
   }
 
-  Future<void> getNextImage(String query) async {
+  Future<void>? getNextImage(String query) async {
+    if (query.isEmpty) {
+      clear();
+      return;
+    }
+
     final Future<List<KakaoImageVO>?> res;
     if (query == queryHistory) {
       currentPage += 1;
@@ -68,6 +73,7 @@ class ImageItemVOInterface {
     } else {
       queryHistory = query;
       currentPage = 0;
+      clear();
       res = KakaoAPI.getImage(query: query, pageNum: currentPage);
     }
 
@@ -90,7 +96,7 @@ class ImageItemVOInterface {
 class ImageItemNotifier extends Notifier<ImageItemVOInterface> {
   void mockGet() => state.mockGet();
   void clear() => state.clear();
-  Future<void> getNextImage(String query) => state.getNextImage(query);
+  Future<void>? getNextImage(String query) => state.getNextImage(query);
   ImageItemVO getSingleVO(int index) => state.getSingleVO(index);
 
   @override

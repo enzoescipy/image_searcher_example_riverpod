@@ -56,7 +56,7 @@ class ImageSearchPage extends ConsumerWidget {
                     future: providerVO.loadingState,
                     builder: (context, snapshot) {
                       if (snapshot.hasData == false) {
-                        if (providerVO.loadingState == null) {
+                        if (providerVO.loadingState == null || imageItemVOInterface.storage.isEmpty) {
                           return URLImageOrganizer(urlList: [], col: 3, width: mediaQuery.size.width - 20);
                         }
                         return Column(
