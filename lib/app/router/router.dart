@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:image_search/app/screen/Tab/pages/Favorite/favorite_page.dart';
 import 'package:image_search/app/screen/Tab/pages/ImageSearch/image_search_page.dart';
 import 'package:image_search/app/screen/Tab/pages/ImageSearch/pages/detail/image_search_detail.dart';
+import 'package:image_search/app/screen/Tab/pages/TextSearch/pages/detail/text_search_detail.dart';
 import 'package:image_search/app/screen/Tab/pages/TextSearch/text_search_page.dart';
 import 'package:image_search/app/screen/Tab/tab_shell.dart';
 
@@ -40,7 +41,20 @@ abstract class RouterOutlet {
               ),
             ],
           ),
-          StatefulShellBranch(routes: [GoRoute(path: _Path.text, builder: (context, state) => TextSearchPage())]),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: _Path.text,
+                builder: (context, state) => TextSearchPage(),
+                routes: [
+                  GoRoute(
+                    path: '${_Path.detail}/:${_Param.id}',
+                    builder: (context, state) => TextSearchDetail(state.pathParameters[_Param.id]),
+                  ),
+                ],
+              ),
+            ],
+          ),
           StatefulShellBranch(routes: [GoRoute(path: _Path.favorite, builder: (context, state) => FavoritePage())]),
         ],
       ),
@@ -54,6 +68,7 @@ abstract class RouterPath {
   static const image = _Path.image;
   static String imageDetail(int id) => '$image${_Path.detail}/$id';
   static const text = _Path.text;
+  static String textDetail(int id) => '$text${_Path.detail}/$id';
 }
 
 abstract class _Path {

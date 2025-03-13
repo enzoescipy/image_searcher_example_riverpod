@@ -59,6 +59,7 @@ class KakaoAPI {
     } catch (e) {
       throw Exception("$e");
     }
+    return null;
   }
 
   static Future<List<kakaoPageVO>?> getPage({
@@ -91,5 +92,6 @@ class KakaoAPI {
     } catch (e) {
       throw Exception("$e");
     }
+    return null;
   }
 }

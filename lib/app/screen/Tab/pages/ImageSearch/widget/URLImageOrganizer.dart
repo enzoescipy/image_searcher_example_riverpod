@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_search/app/router/router.dart';
-import 'package:image_search/interface/vo_provider_manager/vo_provider_manager.dart';
+import 'package:image_search/interface/vo_provider_manager/provider/image_provider.dart';
 import 'package:image_search/static/static.dart';
 
-class URLImageOrganizer extends ConsumerWidget {
+class URLImageOrganizer extends StatelessWidget {
   final List<ImageItemVO> urlList;
   final int col;
   final double width;
@@ -18,7 +18,7 @@ class URLImageOrganizer extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final List<Widget> widgetList = [];
     int i = 0;
     while (true) {
