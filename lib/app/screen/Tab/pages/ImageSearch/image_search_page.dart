@@ -57,11 +57,15 @@ class ImageSearchPage extends ConsumerWidget {
                     builder: (context, snapshot) {
                       if (snapshot.hasData == false) {
                         if (providerVO.loadingState == null || imageItemVOInterface.storage.isEmpty) {
-                          return URLImageOrganizer(urlList: [], col: 3, width: mediaQuery.size.width - 20);
+                          return URLImageOrganizer(itemVOList: [], col: 3, width: mediaQuery.size.width - 20);
                         }
                         return Column(
                           children: [
-                            URLImageOrganizer(urlList: imageItemVOInterface.storage, col: 3, width: mediaQuery.size.width - 20),
+                            URLImageOrganizer(
+                              itemVOList: imageItemVOInterface.storage,
+                              col: 3,
+                              width: mediaQuery.size.width - 20,
+                            ),
                             CircularProgressIndicator(),
                           ],
                         );
@@ -69,7 +73,7 @@ class ImageSearchPage extends ConsumerWidget {
                         return Text("Error : ${snapshot.error}");
                       } else {
                         return URLImageOrganizer(
-                          urlList: imageItemVOInterface.storage,
+                          itemVOList: imageItemVOInterface.storage,
                           col: 3,
                           width: mediaQuery.size.width - 20,
                         );
