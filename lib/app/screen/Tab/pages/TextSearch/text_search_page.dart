@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_search/app/screen/Tab/pages/Favorite/provider/favorite_provider.dart';
 import 'package:image_search/app/screen/Tab/pages/ImageSearch/provider/image_search_provider.dart';
 import 'package:image_search/app/screen/Tab/pages/TextSearch/provider/text_search_provider.dart';
 import 'package:image_search/app/screen/Tab/pages/TextSearch/widget/text_organizer.dart';
@@ -16,6 +17,9 @@ class TextSearchPage extends ConsumerWidget {
     final providerNotifier = ref.read(textSearchProvider.notifier);
     final providerVO = ref.watch(textSearchProvider);
     final textItemVOInterface = ref.watch(VOProviderManager().textItemVOInterfaceProvider);
+
+    final favoriteProviderNotifier = ref.read(favoriteProvider.notifier);
+
     final theme = Theme.of(context);
     final mediaQuery = MediaQuery.of(context);
     return Scaffold(
@@ -59,12 +63,23 @@ class TextSearchPage extends ConsumerWidget {
                           return URLTextOrganizer(textItemList: []);
                         }
                         return Column(
-                          children: [URLTextOrganizer(textItemList: textItemVOInterface.storage), CircularProgressIndicator()],
+                          children: [
+                            URLTextOrganizer(
+                              onLikeButtonTap: favoriteProviderNotifier.refreshFavoriteState,
+
+                              textItemList: textItemVOInterface.storage,
+                            ),
+                            CircularProgressIndicator(),
+                          ],
                         );
                       } else if (snapshot.hasError) {
                         return Text("Error : ${snapshot.error}");
                       } else {
-                        return URLTextOrganizer(textItemList: textItemVOInterface.storage);
+                        return URLTextOrganizer(
+                          onLikeButtonTap: favoriteProviderNotifier.refreshFavoriteState,
+
+                          textItemList: textItemVOInterface.storage,
+                        );
                       }
                     },
                   ),
