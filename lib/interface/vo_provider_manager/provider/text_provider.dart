@@ -1,13 +1,31 @@
 import 'dart:developer';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_search/repository/objectbox_manager/vo/text_vo.dart';
 import 'package:image_search/service/kakao_api_service/kakao_api.dart';
 
-class TextItemVO {
+abstract class TextItemAbstractVO {
+  abstract final String? url;
+  abstract final String? title;
+  abstract final String? dateTime;
+  abstract final String? body;
+}
+
+class TextItemVO extends TextItemAbstractVO {
+  final String url;
   final String title;
   final String dateTime;
   final String body;
-  TextItemVO({required this.title, required this.dateTime, required this.body});
+  TextItemVO({required this.url, required this.title, required this.dateTime, required this.body});
+
+  TextItemEntity toEntity() {
+    final res = TextItemEntity();
+    res.url = url;
+    res.title = title;
+    res.dateTime = dateTime;
+    res.body = body;
+    return res;
+  }
 }
 
 class TextItemVOInterface {
@@ -45,7 +63,7 @@ class TextItemVOInterface {
 
     return res.then((List<kakaoPageVO>? kakaoList) {
       for (kakaoPageVO kakao in kakaoList ?? []) {
-        final target = TextItemVO(title: kakao.title, dateTime: kakao.datetime, body: kakao.content);
+        final target = TextItemVO(url: kakao.url, title: kakao.title, dateTime: kakao.datetime, body: kakao.content);
         storage.add(target);
       }
     });

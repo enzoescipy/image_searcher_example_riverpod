@@ -1,0 +1,86 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:7591924268142909860",
+      "lastPropertyId": "5:5782348062909264800",
+      "name": "ImageItemEntity",
+      "properties": [
+        {
+          "id": "1:6864852738361812278",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:1584799182175174513",
+          "name": "imageURL",
+          "type": 9
+        },
+        {
+          "id": "3:4060779841805375844",
+          "name": "title",
+          "type": 9
+        },
+        {
+          "id": "4:3366816717147113113",
+          "name": "dateTime",
+          "type": 9
+        },
+        {
+          "id": "5:5782348062909264800",
+          "name": "body",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "2:5646988095139482629",
+      "lastPropertyId": "5:6453321474224875660",
+      "name": "TextItemEntity",
+      "properties": [
+        {
+          "id": "1:2164804167402744447",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:5563479294535974218",
+          "name": "url",
+          "type": 9
+        },
+        {
+          "id": "3:6000453538185640077",
+          "name": "title",
+          "type": 9
+        },
+        {
+          "id": "4:6004461028468315505",
+          "name": "dateTime",
+          "type": 9
+        },
+        {
+          "id": "5:6453321474224875660",
+          "name": "body",
+          "type": 9
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "2:5646988095139482629",
+  "lastIndexId": "0:0",
+  "lastRelationId": "0:0",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [],
+  "retiredRelationUids": [],
+  "version": 1
+}
