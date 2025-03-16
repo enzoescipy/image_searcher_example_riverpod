@@ -12,11 +12,22 @@ abstract class TextItemAbstractVO {
 }
 
 class TextItemVO extends TextItemAbstractVO {
-  final String url;
-  final String title;
-  final String dateTime;
-  final String body;
+  @override
+  late final String url;
+  @override
+  late final String title;
+  @override
+  late final String dateTime;
+  @override
+  late final String body;
   TextItemVO({required this.url, required this.title, required this.dateTime, required this.body});
+
+  TextItemVO.toEntity(TextItemEntity entity) {
+    url = entity.url ?? "";
+    title = entity.title ?? "";
+    dateTime = entity.dateTime ?? "";
+    body = entity.body ?? "";
+  }
 
   TextItemEntity toEntity() {
     final res = TextItemEntity();

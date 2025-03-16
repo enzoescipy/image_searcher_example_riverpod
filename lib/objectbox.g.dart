@@ -23,7 +23,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(1, 7591924268142909860),
       name: 'ImageItemEntity',
-      lastPropertyId: const obx_int.IdUid(5, 5782348062909264800),
+      lastPropertyId: const obx_int.IdUid(6, 195366848248875220),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -50,6 +50,11 @@ final _entities = <obx_int.ModelEntity>[
             id: const obx_int.IdUid(5, 5782348062909264800),
             name: 'body',
             type: 9,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(6, 195366848248875220),
+            name: 'creationDateTime',
+            type: 9,
             flags: 0)
       ],
       relations: <obx_int.ModelRelation>[],
@@ -57,7 +62,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(2, 5646988095139482629),
       name: 'TextItemEntity',
-      lastPropertyId: const obx_int.IdUid(5, 6453321474224875660),
+      lastPropertyId: const obx_int.IdUid(6, 6874671295196550519),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -83,6 +88,11 @@ final _entities = <obx_int.ModelEntity>[
         obx_int.ModelProperty(
             id: const obx_int.IdUid(5, 6453321474224875660),
             name: 'body',
+            type: 9,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(6, 6874671295196550519),
+            name: 'creationDateTime',
             type: 9,
             flags: 0)
       ],
@@ -157,12 +167,16 @@ obx_int.ModelDefinition getObjectBoxModel() {
               : fbb.writeString(object.dateTime!);
           final bodyOffset =
               object.body == null ? null : fbb.writeString(object.body!);
-          fbb.startTable(6);
+          final creationDateTimeOffset = object.creationDateTime == null
+              ? null
+              : fbb.writeString(object.creationDateTime!);
+          fbb.startTable(7);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, imageURLOffset);
           fbb.addOffset(2, titleOffset);
           fbb.addOffset(3, dateTimeOffset);
           fbb.addOffset(4, bodyOffset);
+          fbb.addOffset(5, creationDateTimeOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -179,7 +193,9 @@ obx_int.ModelDefinition getObjectBoxModel() {
             ..dateTime = const fb.StringReader(asciiOptimization: true)
                 .vTableGetNullable(buffer, rootOffset, 10)
             ..body = const fb.StringReader(asciiOptimization: true)
-                .vTableGetNullable(buffer, rootOffset, 12);
+                .vTableGetNullable(buffer, rootOffset, 12)
+            ..creationDateTime = const fb.StringReader(asciiOptimization: true)
+                .vTableGetNullable(buffer, rootOffset, 14);
 
           return object;
         }),
@@ -201,12 +217,16 @@ obx_int.ModelDefinition getObjectBoxModel() {
               : fbb.writeString(object.dateTime!);
           final bodyOffset =
               object.body == null ? null : fbb.writeString(object.body!);
-          fbb.startTable(6);
+          final creationDateTimeOffset = object.creationDateTime == null
+              ? null
+              : fbb.writeString(object.creationDateTime!);
+          fbb.startTable(7);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, urlOffset);
           fbb.addOffset(2, titleOffset);
           fbb.addOffset(3, dateTimeOffset);
           fbb.addOffset(4, bodyOffset);
+          fbb.addOffset(5, creationDateTimeOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -223,7 +243,9 @@ obx_int.ModelDefinition getObjectBoxModel() {
             ..dateTime = const fb.StringReader(asciiOptimization: true)
                 .vTableGetNullable(buffer, rootOffset, 10)
             ..body = const fb.StringReader(asciiOptimization: true)
-                .vTableGetNullable(buffer, rootOffset, 12);
+                .vTableGetNullable(buffer, rootOffset, 12)
+            ..creationDateTime = const fb.StringReader(asciiOptimization: true)
+                .vTableGetNullable(buffer, rootOffset, 14);
 
           return object;
         })
@@ -253,6 +275,10 @@ class ImageItemEntity_ {
   /// See [ImageItemEntity.body].
   static final body =
       obx.QueryStringProperty<ImageItemEntity>(_entities[0].properties[4]);
+
+  /// See [ImageItemEntity.creationDateTime].
+  static final creationDateTime =
+      obx.QueryStringProperty<ImageItemEntity>(_entities[0].properties[5]);
 }
 
 /// [TextItemEntity] entity fields to define ObjectBox queries.
@@ -276,4 +302,8 @@ class TextItemEntity_ {
   /// See [TextItemEntity.body].
   static final body =
       obx.QueryStringProperty<TextItemEntity>(_entities[1].properties[4]);
+
+  /// See [TextItemEntity.creationDateTime].
+  static final creationDateTime =
+      obx.QueryStringProperty<TextItemEntity>(_entities[1].properties[5]);
 }

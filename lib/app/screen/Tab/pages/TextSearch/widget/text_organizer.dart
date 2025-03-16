@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_search/app/router/router.dart';
-import 'package:image_search/app/screen/Tab/widget/LikeButton.dart';
+import 'package:image_search/app/screen/Tab/widget/like_button.dart';
 import 'package:image_search/interface/vo_provider_manager/provider/text_provider.dart';
+import 'package:image_search/repository/objectbox_manager/objectbox_manager.dart';
 import 'package:image_search/static/static.dart';
 
 class URLTextOrganizer extends StatelessWidget {
   final List<TextItemVO> textItemList;
+  final bool isReversedLikeStatae;
 
-  URLTextOrganizer({super.key, required this.textItemList});
+  const URLTextOrganizer({super.key, required this.textItemList, this.isReversedLikeStatae = false});
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +52,15 @@ class URLTextOrganizer extends StatelessWidget {
                   ),
                 ),
               ),
-              Likebutton(then: () {}),
+              Likebutton(
+            isReversed: isReversedLikeStatae,
+                likeThen: () {
+                  ObjectBoxManager().putTextFavorite(item.toEntity());
+                },
+                dislikeThen: () {
+                  ObjectBoxManager().deleteTextFavoriteByUrl(item.url);
+                },
+              ),
             ],
           ),
         );

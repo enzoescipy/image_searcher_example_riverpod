@@ -11,14 +11,20 @@ abstract class ImageItemAbstractVO {
 
 class ImageItemVO extends ImageItemAbstractVO {
   @override
-  final String imageURL;
+  late final String imageURL;
   @override
-  final String title;
+  late final String title;
   @override
-  final String dateTime;
+  late final String dateTime;
   @override
-  final String body;
+  late final String body;
   ImageItemVO({required this.imageURL, required this.title, required this.dateTime, required this.body});
+  ImageItemVO.fromEntity(ImageItemEntity entity) {
+    imageURL = entity.imageURL ?? "";
+    title = entity.title ?? "";
+    dateTime = entity.dateTime ?? "";
+    body = entity.body ?? "";
+  }
   ImageItemEntity toEntity() {
     final res = ImageItemEntity();
     res.imageURL = imageURL;

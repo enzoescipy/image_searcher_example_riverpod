@@ -4,16 +4,20 @@ import 'package:image_search/repository/objectbox_manager/vo/text_vo.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 
+mixin EntityProperty {
+  String? creationDateTime;
+}
+
 class ObjectBox {
   static ObjectBox? to;
 
-  late final Store _store;
+  late final Store store;
   late final Box<ImageItemEntity> imageBox;
   late final Box<TextItemEntity> textBox;
 
-  ObjectBox._fromStore() {
-    imageBox = _store.box<ImageItemEntity>();
-    textBox = _store.box<TextItemEntity>();
+  ObjectBox._fromStore(Store store) {
+    imageBox = store.box<ImageItemEntity>();
+    textBox = store.box<TextItemEntity>();
   }
 
   /// Create an instance of ObjectBox to use throughout the app.
@@ -21,17 +25,17 @@ class ObjectBox {
     final docsDir = await getApplicationDocumentsDirectory();
     // Future<Store> openStore() {...} is defined in the generated objectbox.g.dart
     final store = await openStore(directory: p.join(docsDir.path, "obx-example"));
-    to = ObjectBox._fromStore();
+    to = ObjectBox._fromStore(store);
   }
 }
 
-class ObjectboxManager {
+class ObjectBoxManager {
   /// singleton pattern
-  static final _instance = ObjectboxManager._internal();
-  factory ObjectboxManager() {
+  static final _instance = ObjectBoxManager._internal();
+  factory ObjectBoxManager() {
     return _instance;
   }
-  ObjectboxManager._internal();
+  ObjectBoxManager._internal();
 
   static void _put<T>(Box box, T entity) {
     box.put(entity);
@@ -42,10 +46,12 @@ class ObjectboxManager {
   }
 
   void putImageFavorite(ImageItemEntity imageFavoriteItem) {
+    imageFavoriteItem.creationDateTime = DateTime.now().toIso8601String();
     _put(ObjectBox.to!.imageBox, imageFavoriteItem);
   }
 
   void putTextFavorite(TextItemEntity textFavoriteItem) {
+    textFavoriteItem.creationDateTime = DateTime.now().toIso8601String();
     _put(ObjectBox.to!.textBox, textFavoriteItem);
   }
 
@@ -66,5 +72,4 @@ class ObjectboxManager {
     final query = ObjectBox.to!.textBox.query(TextItemEntity_.url.equals(url)).build();
     query.remove();
   }
-
 }

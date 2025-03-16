@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_search/app/router/router.dart';
-import 'package:image_search/app/screen/Tab/widget/LikeButton.dart';
+import 'package:image_search/app/screen/Tab/widget/like_button.dart';
 import 'package:image_search/interface/vo_provider_manager/provider/image_provider.dart';
+import 'package:image_search/repository/objectbox_manager/objectbox_manager.dart';
 import 'package:image_search/static/static.dart';
 
 class URLImageOrganizer extends StatelessWidget {
@@ -14,7 +15,16 @@ class URLImageOrganizer extends StatelessWidget {
   final double margin;
   late final double imageWidth;
 
-  URLImageOrganizer({super.key, required this.itemVOList, required this.col, required this.width, this.margin = 2.5}) {
+  final bool isReversedLikeState;
+
+  URLImageOrganizer({
+    super.key,
+    required this.itemVOList,
+    required this.col,
+    required this.width,
+    this.margin = 2.5,
+    this.isReversedLikeState = false,
+  }) {
     imageWidth = (width - (col - 1) * margin) / col;
   }
 
@@ -78,7 +88,15 @@ class URLImageOrganizer extends StatelessWidget {
         alignment: Alignment.topRight,
         children: [
           GestureDetector(child: imageWidget, onTap: () => context.go(RouterPath.imageDetail(i))),
-          Likebutton(then: () {}),
+          Likebutton(
+            isReversed: isReversedLikeState,
+            likeThen: () {
+              ObjectBoxManager().putImageFavorite(imageItem.toEntity());
+            },
+            dislikeThen: () {
+              ObjectBoxManager().deleteImageFavoriteByUrl(imageItem.imageURL);
+            },
+          ),
         ],
       );
       widgetList.add(clickableWidget);

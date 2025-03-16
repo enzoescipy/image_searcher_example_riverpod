@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_search/app/screen/Tab/pages/ImageSearch/provider/image_search_provider.dart';
 import 'package:image_search/app/screen/Tab/pages/TextSearch/provider/text_search_provider.dart';
-import 'package:image_search/app/screen/Tab/pages/TextSearch/widget/TextOrganizer.dart';
+import 'package:image_search/app/screen/Tab/pages/TextSearch/widget/text_organizer.dart';
 import 'package:image_search/interface/vo_provider_manager/vo_provider_manager.dart';
 import 'package:image_search/static/static.dart';
 

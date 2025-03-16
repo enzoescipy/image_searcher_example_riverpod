@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:7591924268142909860",
-      "lastPropertyId": "5:5782348062909264800",
+      "lastPropertyId": "6:195366848248875220",
       "name": "ImageItemEntity",
       "properties": [
         {
@@ -33,13 +33,18 @@
           "id": "5:5782348062909264800",
           "name": "body",
           "type": 9
+        },
+        {
+          "id": "6:195366848248875220",
+          "name": "creationDateTime",
+          "type": 9
         }
       ],
       "relations": []
     },
     {
       "id": "2:5646988095139482629",
-      "lastPropertyId": "5:6453321474224875660",
+      "lastPropertyId": "6:6874671295196550519",
       "name": "TextItemEntity",
       "properties": [
         {
@@ -66,6 +71,11 @@
         {
           "id": "5:6453321474224875660",
           "name": "body",
+          "type": 9
+        },
+        {
+          "id": "6:6874671295196550519",
+          "name": "creationDateTime",
           "type": 9
         }
       ],
