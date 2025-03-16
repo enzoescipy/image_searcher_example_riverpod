@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_search/app/screen/Tab/pages/Favorite/provider/favorite_provider.dart';
 import 'package:image_search/app/screen/Tab/pages/ImageSearch/provider/image_search_provider.dart';
 import 'package:image_search/app/screen/Tab/pages/ImageSearch/widget/url_image_organizer.dart';
 import 'package:image_search/interface/vo_provider_manager/vo_provider_manager.dart';
@@ -14,6 +15,9 @@ class ImageSearchPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final providerNotifier = ref.read(imageSearchProvider.notifier);
     final providerVO = ref.watch(imageSearchProvider);
+
+    final favoriteProviderNotifier = ref.read(favoriteProvider.notifier);
+
     final mediaQuery = MediaQuery.of(context);
     final imageItemVOInterface = ref.watch(VOProviderManager().imageItemVOInterfaceProvider);
     final theme = Theme.of(context);
@@ -62,6 +66,7 @@ class ImageSearchPage extends ConsumerWidget {
                         return Column(
                           children: [
                             URLImageOrganizer(
+                              onLikeButtonTap: favoriteProviderNotifier.refreshFavoriteState,
                               itemVOList: imageItemVOInterface.storage,
                               col: 3,
                               width: mediaQuery.size.width - 20,
@@ -73,6 +78,7 @@ class ImageSearchPage extends ConsumerWidget {
                         return Text("Error : ${snapshot.error}");
                       } else {
                         return URLImageOrganizer(
+                          onLikeButtonTap: favoriteProviderNotifier.refreshFavoriteState,
                           itemVOList: imageItemVOInterface.storage,
                           col: 3,
                           width: mediaQuery.size.width - 20,

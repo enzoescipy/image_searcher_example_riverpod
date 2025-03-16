@@ -9,8 +9,9 @@ import 'package:image_search/static/static.dart';
 class URLTextOrganizer extends StatelessWidget {
   final List<TextItemVO> textItemList;
   final bool isReversedLikeStatae;
+  final void Function()? onLikeButtonTap;
 
-  const URLTextOrganizer({super.key, required this.textItemList, this.isReversedLikeStatae = false});
+  const URLTextOrganizer({super.key, required this.textItemList, this.isReversedLikeStatae = false, this.onLikeButtonTap});
 
   @override
   Widget build(BuildContext context) {
@@ -53,12 +54,18 @@ class URLTextOrganizer extends StatelessWidget {
                 ),
               ),
               Likebutton(
-            isReversed: isReversedLikeStatae,
+                isReversed: isReversedLikeStatae,
                 likeThen: () {
                   ObjectBoxManager().putTextFavorite(item.toEntity());
+                  if (onLikeButtonTap != null) {
+                    onLikeButtonTap!();
+                  }
                 },
                 dislikeThen: () {
                   ObjectBoxManager().deleteTextFavoriteByUrl(item.url);
+                  if (onLikeButtonTap != null) {
+                    onLikeButtonTap!();
+                  }
                 },
               ),
             ],

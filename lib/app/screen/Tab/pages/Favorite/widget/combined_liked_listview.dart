@@ -9,6 +9,7 @@ class CombinedLikedListview extends StatelessWidget {
   final String dateTime;
 
   final PageMenuChoice widgetType;
+  final void Function()? onLikeButtonTap;
   final String url;
 
   const CombinedLikedListview({
@@ -18,6 +19,7 @@ class CombinedLikedListview extends StatelessWidget {
     required this.dateTime,
     required this.widgetType,
     required this.url,
+    this.onLikeButtonTap,
   });
 
   @override
@@ -50,6 +52,9 @@ class CombinedLikedListview extends StatelessWidget {
                 break;
               default:
                 break;
+            }
+            if (onLikeButtonTap != null) {
+              onLikeButtonTap!();
             }
           },
         ),

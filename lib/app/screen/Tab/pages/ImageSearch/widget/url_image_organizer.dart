@@ -16,6 +16,7 @@ class URLImageOrganizer extends StatelessWidget {
   late final double imageWidth;
 
   final bool isReversedLikeState;
+  final void Function()? onLikeButtonTap;
 
   URLImageOrganizer({
     super.key,
@@ -24,6 +25,7 @@ class URLImageOrganizer extends StatelessWidget {
     required this.width,
     this.margin = 2.5,
     this.isReversedLikeState = false,
+    this.onLikeButtonTap,
   }) {
     imageWidth = (width - (col - 1) * margin) / col;
   }
@@ -92,9 +94,15 @@ class URLImageOrganizer extends StatelessWidget {
             isReversed: isReversedLikeState,
             likeThen: () {
               ObjectBoxManager().putImageFavorite(imageItem.toEntity());
+              if (onLikeButtonTap != null) {
+                onLikeButtonTap!();
+              }
             },
             dislikeThen: () {
               ObjectBoxManager().deleteImageFavoriteByUrl(imageItem.imageURL);
+              if (onLikeButtonTap != null) {
+                onLikeButtonTap!();
+              }
             },
           ),
         ],

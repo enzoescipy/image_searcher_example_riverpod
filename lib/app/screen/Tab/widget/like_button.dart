@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -7,21 +9,19 @@ class Likebutton extends ConsumerWidget {
   final void Function() dislikeThen;
   late final StateProvider<bool> isLikedProvider;
 
-  Likebutton({
-    super.key,
-    required this.likeThen,
-    required this.dislikeThen,
-    this.isReversed = false,
-  }) {
+  Likebutton({super.key, required this.likeThen, required this.dislikeThen, this.isReversed = false}) {
     isLikedProvider = StateProvider<bool>((ref) => isReversed ? true : false);
   }
 
   void toggle(WidgetRef ref) {
     final stateBool = (ref.read(isLikedProvider.notifier).state);
+    log("statebool : $stateBool");
     ref.read(isLikedProvider.notifier).state = !stateBool;
     if (stateBool == true) {
+      log("dislike");
       dislikeThen();
     } else {
+      log("like");
       likeThen();
     }
   }

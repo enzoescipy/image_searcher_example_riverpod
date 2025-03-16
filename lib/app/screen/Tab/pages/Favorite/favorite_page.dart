@@ -22,17 +22,12 @@ class FavoritePage extends ConsumerWidget {
     final theme = Theme.of(context);
     final mediaQuery = MediaQuery.of(context);
 
-    final imageFavoriteList = ObjectBoxManager().getImageFavorite();
-    final textFavoriteList = ObjectBoxManager().getTextFavorite();
-    // final imageFavoriteList = getMockImageItemEntityList();
-    // final textFavoriteList = getMockTextItemEntityList();
-
     final Widget content;
     switch (providerVO.pageMenuChoice) {
       case PageMenuChoice.all:
         final creationDateTimeSorted =
-            imageFavoriteList.map((item) => item.creationDateTime).toList() +
-            textFavoriteList.map((item) => item.creationDateTime).toList();
+            providerVO.imageFavoriteList.map((item) => item.creationDateTime).toList() +
+            providerVO.textFavoriteList.map((item) => item.creationDateTime).toList();
         creationDateTimeSorted.sort((a, b) {
           if (a == null && b == null) {
             return 0;
@@ -54,13 +49,14 @@ class FavoritePage extends ConsumerWidget {
             continue;
           }
 
-          final imageItemQuery = imageFavoriteList.where((item) => item.creationDateTime == creationTime);
-          final textItemQuery = textFavoriteList.where((item) => item.creationDateTime == creationTime);
+          final imageItemQuery = providerVO.imageFavoriteList.where((item) => item.creationDateTime == creationTime);
+          final textItemQuery = providerVO.textFavoriteList.where((item) => item.creationDateTime == creationTime);
 
           if (imageItemQuery.isNotEmpty) {
             final imageItem = imageItemQuery.first;
             listviewItemList.add(
               CombinedLikedListview(
+                onLikeButtonTap: providerNotifier.refreshFavoriteState,
                 thumb: Image.network(imageItem.imageURL ?? "", width: 100, height: 100),
                 body: imageItem.title ?? "",
                 dateTime: imageItem.dateTime ?? "",
@@ -72,6 +68,7 @@ class FavoritePage extends ConsumerWidget {
             final textItem = textItemQuery.first;
             listviewItemList.add(
               CombinedLikedListview(
+                onLikeButtonTap: providerNotifier.refreshFavoriteState,
                 thumb: Image.network(textItem.url ?? "", width: 100, height: 100),
                 body: textItem.title ?? "",
                 dateTime: textItem.dateTime ?? "",
@@ -86,16 +83,18 @@ class FavoritePage extends ConsumerWidget {
         break;
       case PageMenuChoice.image:
         content = URLImageOrganizer(
+          onLikeButtonTap: providerNotifier.refreshFavoriteState,
           isReversedLikeState: true,
-          itemVOList: imageFavoriteList.map((item) => ImageItemVO.fromEntity(item)).toList(),
+          itemVOList: providerVO.imageFavoriteList.map((item) => ImageItemVO.fromEntity(item)).toList(),
           col: 3,
           width: mediaQuery.size.width - 20,
         );
         break;
       case PageMenuChoice.text:
         content = URLTextOrganizer(
+          onLikeButtonTap: providerNotifier.refreshFavoriteState,
           isReversedLikeStatae: true,
-          textItemList: textFavoriteList.map((item) => TextItemVO.toEntity(item)).toList(),
+          textItemList: providerVO.textFavoriteList.map((item) => TextItemVO.toEntity(item)).toList(),
         );
         break;
     }
