@@ -16,11 +16,22 @@ class ImageSearchPage extends ConsumerWidget {
     final providerNotifier = ref.read(imageSearchProvider.notifier);
     final providerVO = ref.watch(imageSearchProvider);
 
+    final favoriteProviderVO = ref.watch(favoriteProvider);
     final favoriteProviderNotifier = ref.read(favoriteProvider.notifier);
 
     final mediaQuery = MediaQuery.of(context);
     final imageItemVOInterface = ref.watch(VOProviderManager().imageItemVOInterfaceProvider);
     final theme = Theme.of(context);
+
+    // final likedListForVO =
+    //     imageItemVOInterface.storage.map((imageVO) {
+    //       final urlFavoritedList = favoriteProviderVO.imageFavoriteList.map((item) => item.imageURL);
+    //       if (urlFavoritedList.contains(imageVO.imageURL)) {
+    //         return true;
+    //       } else {
+    //         return false;
+    //       }
+    //     }).toList();
 
     return Scaffold(
       appBar: AppBar(title: Text('고양이 만세', style: theme.textTheme.headlineMedium), backgroundColor: Palette.background),
@@ -61,13 +72,27 @@ class ImageSearchPage extends ConsumerWidget {
                     builder: (context, snapshot) {
                       if (snapshot.hasData == false) {
                         if (providerVO.loadingState == null || imageItemVOInterface.storage.isEmpty) {
-                          return URLImageOrganizer(itemVOList: [], col: 3, width: mediaQuery.size.width - 20);
+                          return URLImageOrganizer(
+                            itemVOLikedList: [],
+                            itemVOList: [],
+                            col: 3,
+                            width: mediaQuery.size.width - 20,
+                          );
                         }
                         return Column(
                           children: [
                             URLImageOrganizer(
                               onLikeButtonTap: favoriteProviderNotifier.refreshFavoriteState,
                               itemVOList: imageItemVOInterface.storage,
+                              itemVOLikedList:
+                                  imageItemVOInterface.storage.map((imageVO) {
+                                    final urlFavoritedList = favoriteProviderVO.imageFavoriteList.map((item) => item.imageURL);
+                                    if (urlFavoritedList.contains(imageVO.imageURL)) {
+                                      return true;
+                                    } else {
+                                      return false;
+                                    }
+                                  }).toList(),
                               col: 3,
                               width: mediaQuery.size.width - 20,
                             ),
@@ -80,6 +105,15 @@ class ImageSearchPage extends ConsumerWidget {
                         return URLImageOrganizer(
                           onLikeButtonTap: favoriteProviderNotifier.refreshFavoriteState,
                           itemVOList: imageItemVOInterface.storage,
+                          itemVOLikedList:
+                              imageItemVOInterface.storage.map((imageVO) {
+                                final urlFavoritedList = favoriteProviderVO.imageFavoriteList.map((item) => item.imageURL);
+                                if (urlFavoritedList.contains(imageVO.imageURL)) {
+                                  return true;
+                                } else {
+                                  return false;
+                                }
+                              }).toList(),
                           col: 3,
                           width: mediaQuery.size.width - 20,
                         );

@@ -69,7 +69,7 @@ class FavoritePage extends ConsumerWidget {
             listviewItemList.add(
               CombinedLikedListview(
                 onLikeButtonTap: providerNotifier.refreshFavoriteState,
-                thumb: Image.network(textItem.url ?? "", width: 100, height: 100),
+                thumb: Text(textItem.body ?? "", maxLines: 3),
                 body: textItem.title ?? "",
                 dateTime: textItem.dateTime ?? "",
                 widgetType: PageMenuChoice.text,
@@ -84,7 +84,7 @@ class FavoritePage extends ConsumerWidget {
       case PageMenuChoice.image:
         content = URLImageOrganizer(
           onLikeButtonTap: providerNotifier.refreshFavoriteState,
-          isReversedLikeState: true,
+          itemVOLikedList: providerVO.imageFavoriteList.map((item) => true).toList(),
           itemVOList: providerVO.imageFavoriteList.map((item) => ImageItemVO.fromEntity(item)).toList(),
           col: 3,
           width: mediaQuery.size.width - 20,
@@ -93,6 +93,7 @@ class FavoritePage extends ConsumerWidget {
       case PageMenuChoice.text:
         content = URLTextOrganizer(
           onLikeButtonTap: providerNotifier.refreshFavoriteState,
+          textItemLikedList: providerVO.textFavoriteList.map((item) => true).toList(),
           isReversedLikeStatae: true,
           textItemList: providerVO.textFavoriteList.map((item) => TextItemVO.toEntity(item)).toList(),
         );

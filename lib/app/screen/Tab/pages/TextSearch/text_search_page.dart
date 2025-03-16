@@ -18,10 +18,21 @@ class TextSearchPage extends ConsumerWidget {
     final providerVO = ref.watch(textSearchProvider);
     final textItemVOInterface = ref.watch(VOProviderManager().textItemVOInterfaceProvider);
 
+    final favoriteProviderVO = ref.watch(favoriteProvider);
     final favoriteProviderNotifier = ref.read(favoriteProvider.notifier);
 
     final theme = Theme.of(context);
     final mediaQuery = MediaQuery.of(context);
+
+    // final likedListForVO =
+    //     textItemVOInterface.storage.map((textItem) {
+    //       final urlFavoritedList = favoriteProviderVO.textFavoriteList.map((item) => item.url);
+    //       if (urlFavoritedList.contains(textItem.url)) {
+    //         return true;
+    //       } else {
+    //         return false;
+    //       }
+    //     }).toList();
     return Scaffold(
       appBar: AppBar(title: Text('고양이 만세', style: theme.textTheme.headlineMedium), backgroundColor: Palette.background),
       body: Center(
@@ -60,14 +71,22 @@ class TextSearchPage extends ConsumerWidget {
                     builder: (context, snapshot) {
                       if (snapshot.hasData == false) {
                         if (providerVO.loadingState == null || textItemVOInterface.storage.isEmpty) {
-                          return URLTextOrganizer(textItemList: []);
+                          return URLTextOrganizer(textItemList: [], textItemLikedList: []);
                         }
                         return Column(
                           children: [
                             URLTextOrganizer(
                               onLikeButtonTap: favoriteProviderNotifier.refreshFavoriteState,
-
                               textItemList: textItemVOInterface.storage,
+                              textItemLikedList:
+                                  textItemVOInterface.storage.map((textItem) {
+                                    final urlFavoritedList = favoriteProviderVO.textFavoriteList.map((item) => item.url);
+                                    if (urlFavoritedList.contains(textItem.url)) {
+                                      return true;
+                                    } else {
+                                      return false;
+                                    }
+                                  }).toList(),
                             ),
                             CircularProgressIndicator(),
                           ],
@@ -77,6 +96,15 @@ class TextSearchPage extends ConsumerWidget {
                       } else {
                         return URLTextOrganizer(
                           onLikeButtonTap: favoriteProviderNotifier.refreshFavoriteState,
+                          textItemLikedList:
+                              textItemVOInterface.storage.map((textItem) {
+                                final urlFavoritedList = favoriteProviderVO.textFavoriteList.map((item) => item.url);
+                                if (urlFavoritedList.contains(textItem.url)) {
+                                  return true;
+                                } else {
+                                  return false;
+                                }
+                              }).toList(),
 
                           textItemList: textItemVOInterface.storage,
                         );

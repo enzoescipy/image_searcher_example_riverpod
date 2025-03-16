@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_search/app/router/router.dart';
@@ -8,10 +10,17 @@ import 'package:image_search/static/static.dart';
 
 class URLTextOrganizer extends StatelessWidget {
   final List<TextItemVO> textItemList;
+  final List<bool> textItemLikedList;
   final bool isReversedLikeStatae;
   final void Function()? onLikeButtonTap;
 
-  const URLTextOrganizer({super.key, required this.textItemList, this.isReversedLikeStatae = false, this.onLikeButtonTap});
+  URLTextOrganizer({
+    super.key,
+    required this.textItemList,
+    required this.textItemLikedList,
+    this.isReversedLikeStatae = false,
+    this.onLikeButtonTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +28,9 @@ class URLTextOrganizer extends StatelessWidget {
     if (textItemList.isNotEmpty) {
       final List<Widget> itemWidgetList = [];
       for (int i = 0; i < textItemList.length; i++) {
+        log("${textItemList.length}, ${textItemLikedList.length}");
         final item = textItemList[i];
+        final itemLiked = textItemLikedList[i];
         itemWidgetList.add(
           Stack(
             children: [
@@ -54,7 +65,7 @@ class URLTextOrganizer extends StatelessWidget {
                 ),
               ),
               Likebutton(
-                isReversed: isReversedLikeStatae,
+                initialState: itemLiked,
                 likeThen: () {
                   ObjectBoxManager().putTextFavorite(item.toEntity());
                   if (onLikeButtonTap != null) {

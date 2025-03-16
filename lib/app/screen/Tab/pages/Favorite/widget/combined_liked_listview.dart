@@ -40,7 +40,7 @@ class CombinedLikedListview extends StatelessWidget {
           trailing: Text((dateTime).split('T')[0], style: theme.textTheme.bodyMedium),
         ),
         Likebutton(
-          isReversed: true,
+          initialState: true,
           likeThen: () {},
           dislikeThen: () {
             switch (widgetType) {

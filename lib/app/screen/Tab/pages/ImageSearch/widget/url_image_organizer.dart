@@ -10,21 +10,21 @@ import 'package:image_search/static/static.dart';
 
 class URLImageOrganizer extends StatelessWidget {
   final List<ImageItemVO> itemVOList;
+  final List<bool> itemVOLikedList;
   final int col;
   final double width;
   final double margin;
   late final double imageWidth;
 
-  final bool isReversedLikeState;
   final void Function()? onLikeButtonTap;
 
   URLImageOrganizer({
     super.key,
     required this.itemVOList,
+    required this.itemVOLikedList,
     required this.col,
     required this.width,
     this.margin = 2.5,
-    this.isReversedLikeState = false,
     this.onLikeButtonTap,
   }) {
     imageWidth = (width - (col - 1) * margin) / col;
@@ -77,6 +77,7 @@ class URLImageOrganizer extends StatelessWidget {
 
     for (int i = fromRange; i < toRange; i++) {
       final imageItem = itemVOList[i];
+      final imageItemLiked = itemVOLikedList[i];
       final imageWidget = Image.network(
         imageItem.imageURL,
         width: imageWidth,
@@ -89,9 +90,14 @@ class URLImageOrganizer extends StatelessWidget {
       final clickableWidget = Stack(
         alignment: Alignment.topRight,
         children: [
-          GestureDetector(child: imageWidget, onTap: () => context.go(RouterPath.imageDetail(i))),
+          GestureDetector(
+            child: imageWidget,
+            onTap: () {
+              context.go(RouterPath.imageDetail(i));
+            },
+          ),
           Likebutton(
-            isReversed: isReversedLikeState,
+            initialState: imageItemLiked,
             likeThen: () {
               ObjectBoxManager().putImageFavorite(imageItem.toEntity());
               if (onLikeButtonTap != null) {
