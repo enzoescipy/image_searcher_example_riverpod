@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:image_search/app/router/router.dart';
 import 'package:image_search/app/screen/Tab/pages/Favorite/provider/favorite_provider.dart';
 import 'package:image_search/app/screen/Tab/pages/ImageSearch/provider/image_search_provider.dart';
 import 'package:image_search/app/screen/Tab/pages/TextSearch/provider/text_search_provider.dart';
@@ -71,7 +73,7 @@ class TextSearchPage extends ConsumerWidget {
                     builder: (context, snapshot) {
                       if (snapshot.hasData == false) {
                         if (providerVO.loadingState == null || textItemVOInterface.storage.isEmpty) {
-                          return URLTextOrganizer(textItemList: [], textItemLikedList: []);
+                          return URLTextOrganizer(textItemList: [], textItemLikedList: [], onItemTap: (int) {});
                         }
                         return Column(
                           children: [
@@ -87,7 +89,9 @@ class TextSearchPage extends ConsumerWidget {
                                       return false;
                                     }
                                   }).toList(),
+                              onItemTap: (i) => context.go(RouterPath.textDetail(i)),
                             ),
+
                             CircularProgressIndicator(),
                           ],
                         );
@@ -105,7 +109,7 @@ class TextSearchPage extends ConsumerWidget {
                                   return false;
                                 }
                               }).toList(),
-
+                          onItemTap: (i) => context.go(RouterPath.textDetail(i)),
                           textItemList: textItemVOInterface.storage,
                         );
                       }

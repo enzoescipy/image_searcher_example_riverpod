@@ -13,11 +13,13 @@ class URLTextOrganizer extends StatelessWidget {
   final List<bool> textItemLikedList;
   final bool isReversedLikeStatae;
   final void Function()? onLikeButtonTap;
+  final void Function(int) onItemTap;
 
   URLTextOrganizer({
     super.key,
     required this.textItemList,
     required this.textItemLikedList,
+    required this.onItemTap,
     this.isReversedLikeStatae = false,
     this.onLikeButtonTap,
   });
@@ -40,7 +42,9 @@ class URLTextOrganizer extends StatelessWidget {
                   elevation: 3.0,
                   color: Colors.black,
                   child: GestureDetector(
-                    onTap: () => context.go(RouterPath.textDetail(i)),
+                    onTap: () {
+                      onItemTap(i);
+                    },
                     child: Container(
                       color: Palette.white,
                       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),

@@ -11,6 +11,7 @@ import 'package:image_search/static/static.dart';
 class URLImageOrganizer extends StatelessWidget {
   final List<ImageItemVO> itemVOList;
   final List<bool> itemVOLikedList;
+  final void Function(int index) onItemTap;
   final int col;
   final double width;
   final double margin;
@@ -22,6 +23,7 @@ class URLImageOrganizer extends StatelessWidget {
     super.key,
     required this.itemVOList,
     required this.itemVOLikedList,
+    required this.onItemTap,
     required this.col,
     required this.width,
     this.margin = 2.5,
@@ -93,7 +95,7 @@ class URLImageOrganizer extends StatelessWidget {
           GestureDetector(
             child: imageWidget,
             onTap: () {
-              context.go(RouterPath.imageDetail(i));
+              onItemTap(i);
             },
           ),
           Likebutton(

@@ -10,6 +10,7 @@ class CombinedLikedListview extends StatelessWidget {
 
   final PageMenuChoice widgetType;
   final void Function()? onLikeButtonTap;
+  final void Function() onTap;
   final String url;
 
   const CombinedLikedListview({
@@ -19,6 +20,7 @@ class CombinedLikedListview extends StatelessWidget {
     required this.dateTime,
     required this.widgetType,
     required this.url,
+    required this.onTap,
     this.onLikeButtonTap,
   });
 
@@ -31,13 +33,16 @@ class CombinedLikedListview extends StatelessWidget {
     return Stack(
       alignment: Alignment.topRight,
       children: [
-        ListTile(
-          title: thumb,
-          leading: SizedBox(
-            width: 100,
-            child: Text(body, style: theme.textTheme.titleSmall?.apply(overflow: TextOverflow.ellipsis), maxLines: 2),
+        GestureDetector(
+          onTap: onTap,
+          child: ListTile(
+            title: thumb,
+            leading: SizedBox(
+              width: 100,
+              child: Text(body, style: theme.textTheme.titleSmall?.apply(overflow: TextOverflow.ellipsis), maxLines: 2),
+            ),
+            trailing: Text((dateTime).split('T')[0], style: theme.textTheme.bodyMedium),
           ),
-          trailing: Text((dateTime).split('T')[0], style: theme.textTheme.bodyMedium),
         ),
         Likebutton(
           initialState: true,

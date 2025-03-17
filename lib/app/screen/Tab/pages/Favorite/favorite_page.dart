@@ -1,5 +1,8 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:image_search/app/router/router.dart';
 import 'package:image_search/app/screen/Tab/pages/Favorite/provider/favorite_provider.dart';
 import 'package:image_search/app/screen/Tab/pages/Favorite/widget/combined_liked_listview.dart';
 import 'package:image_search/app/screen/Tab/pages/ImageSearch/widget/url_image_organizer.dart';
@@ -49,13 +52,16 @@ class FavoritePage extends ConsumerWidget {
             continue;
           }
 
-          final imageItemQuery = providerVO.imageFavoriteList.where((item) => item.creationDateTime == creationTime);
-          final textItemQuery = providerVO.textFavoriteList.where((item) => item.creationDateTime == creationTime);
+          final imageItemIndex = providerVO.imageFavoriteList.indexWhere((item) => item.creationDateTime == creationTime);
+          final textItemIndex = providerVO.textFavoriteList.indexWhere((item) => item.creationDateTime == creationTime);
 
-          if (imageItemQuery.isNotEmpty) {
-            final imageItem = imageItemQuery.first;
+          if (imageItemIndex != -1) {
+            final imageItem = providerVO.imageFavoriteList[imageItemIndex];
             listviewItemList.add(
               CombinedLikedListview(
+                onTap: () {
+                  context.go(RouterPath.favoriteImageDetail(imageItemIndex));
+                },
                 onLikeButtonTap: providerNotifier.refreshFavoriteState,
                 thumb: Image.network(imageItem.imageURL ?? "", width: 100, height: 100),
                 body: imageItem.title ?? "",
@@ -64,10 +70,13 @@ class FavoritePage extends ConsumerWidget {
                 url: imageItem.imageURL ?? "",
               ),
             );
-          } else if (textItemQuery.isNotEmpty) {
-            final textItem = textItemQuery.first;
+          } else if (textItemIndex != -1) {
+            final textItem = providerVO.textFavoriteList[textItemIndex];
             listviewItemList.add(
               CombinedLikedListview(
+                onTap: () {
+                  context.go(RouterPath.favoriteTextDetail(textItemIndex));
+                },
                 onLikeButtonTap: providerNotifier.refreshFavoriteState,
                 thumb: Text(textItem.body ?? "", maxLines: 3),
                 body: textItem.title ?? "",
@@ -86,6 +95,10 @@ class FavoritePage extends ConsumerWidget {
           onLikeButtonTap: providerNotifier.refreshFavoriteState,
           itemVOLikedList: providerVO.imageFavoriteList.map((item) => true).toList(),
           itemVOList: providerVO.imageFavoriteList.map((item) => ImageItemVO.fromEntity(item)).toList(),
+          onItemTap: (i) {
+            log("path : ${RouterPath.favoriteImageDetail(i)}");
+            context.go(RouterPath.favoriteImageDetail(i));
+          },
           col: 3,
           width: mediaQuery.size.width - 20,
         );
@@ -93,9 +106,10 @@ class FavoritePage extends ConsumerWidget {
       case PageMenuChoice.text:
         content = URLTextOrganizer(
           onLikeButtonTap: providerNotifier.refreshFavoriteState,
-          textItemLikedList: providerVO.textFavoriteList.map((item) => true).toList(),
           isReversedLikeStatae: true,
+          textItemLikedList: providerVO.textFavoriteList.map((item) => true).toList(),
           textItemList: providerVO.textFavoriteList.map((item) => TextItemVO.toEntity(item)).toList(),
+          onItemTap: (i) => context.go(RouterPath.favoriteTextDetail(i)),
         );
         break;
     }
